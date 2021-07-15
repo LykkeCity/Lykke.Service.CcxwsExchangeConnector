@@ -78,8 +78,23 @@ class RabbitMq {
     
         try {
             const channel = await this.getChannel()
-            // todo: 'new Buffer' most probably is obsolete, has to be checked
-            channel.publish(rabbitExchange, '', new Buffer(objectJson))
+            channel.publish(rabbitExchange, '', Buffer.from(objectJson))
+            this._log.debug(`Message was sent to RabbitMq: ${objectJson}`)
+        }
+        catch(e) {
+            this._log.warn(`Error while sending a message to RabbitMq: ${e}, ${e.stack}.`)
+        }
+    }
+
+    async sendRaw(rabbitExchange, object) {
+        if (this._settings.Disabled) {
+            return;
+        }
+
+        try {
+            const channel = await this.getChannel()
+            channel.publish(rabbitExchange, '', Buffer.from(object))
+            this._log.debug(`Message was sent to RabbitMq: ${object}`)
         }
         catch(e) {
             this._log.warn(`Error while sending a message to RabbitMq: ${e}, ${e.stack}.`)
