@@ -78,7 +78,7 @@ class RabbitMq {
     
         try {
             const channel = await this.getChannel()
-            channel.publish(rabbitExchange, '', Buffer.from(objectJson))
+            channel.publish(rabbitExchange, '', new Buffer(objectJson))
             this._log.debug(`Message was sent to RabbitMq: ${objectJson}`)
         }
         catch(e) {
@@ -93,7 +93,7 @@ class RabbitMq {
 
         try {
             const channel = await this.getChannel()
-            channel.publish(rabbitExchange, '', Buffer.from(object))
+            channel.publish(rabbitExchange, '', new Buffer(object))
             this._log.debug(`Message was sent to RabbitMq: ${object}`)
         }
         catch(e) {
