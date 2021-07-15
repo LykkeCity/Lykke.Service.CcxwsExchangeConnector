@@ -262,7 +262,7 @@ class ExchangeEventsHandler {
                 var protoTrade = this._mapCcxwsTradeToProtoTrade(trade);
                 var payload = this._trade.create(protoTrade)
                 const message = this._trade.encode(payload).finish();
-                await this._rabbitMq.send(this._settings.RabbitMq.Trades, message)
+                await this._rabbitMq.sendRaw(this._settings.RabbitMq.Trades, message)
             }
             else {
                 await this._rabbitMq.send(this._settings.RabbitMq.Trades, trade)
