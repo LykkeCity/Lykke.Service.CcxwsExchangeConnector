@@ -276,17 +276,18 @@ class ExchangeEventsHandler {
 
     _mapCcxwsTradeToProtoTrade(trade){
         const protoTrade = {}
-        protoTrade.venue = trade.exchange
-        protoTrade.tradeId = trade.tradeId
-        protoTrade.assetPairId = trade.marketId
-        protoTrade.price = trade.price
+        protoTrade.Venue = trade.exchange
+        protoTrade.TradeId = trade.tradeId
+        protoTrade.AssetPairId = trade.marketId
+        protoTrade.Price = trade.price
         if (trade.side == "sell") {
-            protoTrade.filledSize = trade.amount * -1
+            protoTrade.FilledSize = trade.amount * -1
         }
         else if (trade.side == "buy") {
-            protoTrade.filledSize = trade.amount
+            protoTrade.FilledSize = trade.amount
         }
-        protoTrade.timestamp = trade.unix
+        protoTrade.CanceledSize = 0
+        protoTrade.Timestamp = this._getProtoTimestamp(trade.unix)
         return protoTrade
     }
 
