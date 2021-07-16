@@ -5,11 +5,11 @@ package common;
 import "google/protobuf/timestamp.proto";
 
 message Trade {
-  string Venue = 1;
-  string TradeId = 2;
-  string AssetPairId = 3;
-  double Price = 4;
-  double FilledSize = 5;
-  double CanceledSize = 6;
-  google.protobuf.Timestamp Timestamp = 7;
+  string venue = 1;
+  string tradeId = 2;
+  string assetPairId = 3;
+  string price = 4;
+  string filledSize = 5;
+  string cancelledSize = 6;
+  google.protobuf.Timestamp timestamp = 7;
 }

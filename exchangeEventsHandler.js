@@ -259,10 +259,16 @@ class ExchangeEventsHandler {
         if (this._settings.Main.Events.Trades.Publish)
         {
             if (this._settings.Main.Events.Trades.Serializer = "protobuf") {
+                try
+                {
                 var protoTrade = this._mapCcxwsTradeToProtoTrade(trade);
                 var payload = this._trade.create(protoTrade)
                 const message = this._trade.encode(payload).finish();
                 await this._rabbitMq.sendRaw(this._settings.RabbitMq.Trades, message)
+                }
+                catch (ex) {
+                    this._log.error(`Can't serialize trade: ${trade.exchange}, ${trade.base}/${trade.quote}, price: ${trade.price}, amount: ${trade.amount}, side: ${trade.side}.`)
+                }
             }
             else {
                 await this._rabbitMq.send(this._settings.RabbitMq.Trades, trade)
@@ -276,18 +282,18 @@ class ExchangeEventsHandler {
 
     _mapCcxwsTradeToProtoTrade(trade){
         const protoTrade = {}
-        protoTrade.Venue = trade.exchange
-        protoTrade.TradeId = trade.tradeId
-        protoTrade.AssetPairId = trade.marketId
-        protoTrade.Price = trade.price
+        protoTrade.venue = trade.exchange
+        protoTrade.tradeId = trade.tradeId
+        protoTrade.assetPairId = trade.marketId
+        protoTrade.price = trade.price
         if (trade.side == "sell") {
-            protoTrade.FilledSize = trade.amount * -1
+            protoTrade.filledSize = '-' + trade.amount
         }
         else if (trade.side == "buy") {
-            protoTrade.FilledSize = trade.amount
+            protoTrade.filledSize = trade.amount
         }
-        protoTrade.CanceledSize = 0
-        protoTrade.Timestamp = this._getProtoTimestamp(trade.unix)
+        protoTrade.cancelledSize = '0'
+        protoTrade.timestamp = this._getProtoTimestamp(trade.unix)
         return protoTrade
     }
 
