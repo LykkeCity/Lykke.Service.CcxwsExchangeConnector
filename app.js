@@ -42,22 +42,22 @@ async function subscribeToExchangesData() {
 
 async function subscribeToExchangeData(exchangeSettings, symbols, settings) {
     
-    let exchangeName = exchangeSettings.CcxwsName
+    let venueName = exchangeSettings.InVenueName
     
     let exchange = null
     
     try {
-        exchange = new ccxt[exchangeName]()
+        exchange = new ccxt[venueName]()
     } catch(e){
-        log.warn(`${exchangeName} wasn't found in ccxt: ${e}.`)
+        log.warn(`${venueName} wasn't found in ccxt: ${e}.`)
         return
     }
 
-    const options = exchangeOptions.GetExchangeOptions(exchangeName, settings)
+    const options = exchangeOptions.GetExchangeOptions(venueName, settings)
 
-    const exchange_ws = exchangesMapping.MapExchangeCcxtToCcxws(exchangeName, options)
+    const exchange_ws = exchangesMapping.MapExchangeCcxtToCcxws(venueName, options)
     if (!exchange_ws) {
-        log.warn(`${exchangeName} wasn't mapped from ccxt to ccxws.`)
+        log.warn(`${venueName} wasn't mapped from ccxt to ccxws.`)
         return
     }
 
@@ -88,7 +88,7 @@ async function subscribeToExchangeData(exchangeSettings, symbols, settings) {
             return
         }
 
-        const handler = new exchangeEventsHandler(exchangeSettings.PublishingName, settings, rabbitMq)
+        const handler = new exchangeEventsHandler(exchangeSettings.OutVenueName, settings, rabbitMq)
 
         exchange_ws.on("ticker", async ticker => await handler.tickerEventHandle(ticker))
         exchange_ws.on("l2snapshot", async orderBook => await handler.l2snapshotEventHandle(orderBook))
