@@ -8,8 +8,8 @@ const Metrics = require('./prometheus/metrics')
 var protobuf = require("protobufjs")
 
 class ExchangeEventsHandler {
-    constructor(exchange, settings, rabbitMq) {
-        this._exchange = exchange
+    constructor(exchangeName, settings, rabbitMq) {
+        this._exchange = exchangeName
         this._settings = settings
         this._rabbitMq = rabbitMq
         this._socketio = getSocketIO(settings)
@@ -22,7 +22,7 @@ class ExchangeEventsHandler {
 
         const suffixConfig = this._settings.Main.ExchangesNamesSuffix
         const suffix = suffixConfig ? suffixConfig : ""
-        this._source = this._exchange.name.replace(this._exchange.version, "").trim()
+        this._source = this._exchange
         this._source = this._source + suffix
 
         this._OBProtoFile = new protobuf.Root().loadSync(__dirname + '/gRPC/orderbooks.proto', {keepCase: true});
@@ -102,7 +102,7 @@ class ExchangeEventsHandler {
             const currentBestAsk = this._orderBooks.get(key).asks.keys().next().value
             const noPriceChange = previousBestBid == currentBestBid && previousBestAsk == currentBestAsk
             if (this._settings.Main.Events.OrderBooks.PublishOnlyIfBboPricesChanged && noPriceChange) {
-                //this._log.debug(`Skipped order book ${this._exchange.name} ${key} - no price change.`)
+                //this._log.debug(`Skipped order book ${this._exchange} ${key} - no price change.`)
                 return
             }
         }
@@ -138,7 +138,7 @@ class ExchangeEventsHandler {
         const internalOrderBook = this._orderBooks.get(key)
 
         if (!internalOrderBook) {
-            this._log.warn(`Order book ${this._exchange.name} ${key} was not found in the cache during the 'order book update' event.`)
+            this._log.warn(`Order book ${this._exchange} ${key} was not found in the cache during the 'order book update' event.`)
             return
         }
 
@@ -176,7 +176,7 @@ class ExchangeEventsHandler {
         const noPriceChange = previousBestBid == currentBestBid && previousBestAsk == currentBestAsk
 
         if (this._settings.Main.Events.OrderBooks.PublishOnlyIfBboPricesChanged && noPriceChange){
-            //this._log.debug(`Skipped order book ${this._exchange.name} ${key} - no price change.`)
+            //this._log.debug(`Skipped order book ${this._exchange} ${key} - no price change.`)
             return
         }
 
@@ -223,7 +223,7 @@ class ExchangeEventsHandler {
             const timestamp = internalOrderBook.timestamp;
             const orderBook = this._mapInternalOrderBookToPublishOrderBook(internalOrderBook)
 
-            if (!this._settings.RabbitMq.Disabled && this._rabbitMq != null)
+            if (!this._settings.RabbitMq.OrderBooksDisabled && this._rabbitMq != null)
                 await this._rabbitMq.send(this._settings.RabbitMq.OrderBooks, orderBook)
 
             if (!this._settings.SocketIO.Disabled && this._socketio != null)
@@ -256,7 +256,7 @@ class ExchangeEventsHandler {
     }
 
     async _publishTrade(trade) {
-        if (this._settings.Main.Events.Trades.Publish)
+        if (this._settings.Main.Events.Trades.Publish && !this._settings.RabbitMq.TradesDisabled)
         {
             if (this._settings.Main.Events.Trades.Serializer = "protobuf") {
                 try

@@ -40,7 +40,9 @@ async function subscribeToExchangesData() {
     return await subscribeToExchangeData(exchanges[0], symbols, settings);
 }
 
-async function subscribeToExchangeData(exchangeName, symbols, settings) {
+async function subscribeToExchangeData(exchangeSettings, symbols, settings) {
+    
+    let exchangeName = exchangeSettings.CcxwsName
     
     let exchange = null
     
@@ -86,14 +88,14 @@ async function subscribeToExchangeData(exchangeName, symbols, settings) {
             return
         }
 
-        const handler = new exchangeEventsHandler(exchange, settings, rabbitMq)
+        const handler = new exchangeEventsHandler(exchangeSettings.PublishingName, settings, rabbitMq)
 
         exchange_ws.on("ticker", async ticker => await handler.tickerEventHandle(ticker))
         exchange_ws.on("l2snapshot", async orderBook => await handler.l2snapshotEventHandle(orderBook))
         exchange_ws.on("l2update", async updateOrderBook => await handler.l2updateEventHandle(updateOrderBook))
         exchange_ws.on("trade", async trade => await handler.tradesEventHandle(trade))
 
-        exchange_ws.on("error", err => log.err(err))
+        exchange_ws.on("error", err => log.error(err))
         exchange_ws.on("connecting", () => log.info('Connecting...'))
         exchange_ws.on("connected", () => log.info('Connected.'))
         exchange_ws.on("disconnected", () => log.warn('Disconnected.'))
