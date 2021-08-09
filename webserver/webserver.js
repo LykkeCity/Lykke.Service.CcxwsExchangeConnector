@@ -40,7 +40,8 @@ async function startWebServer(loggingLevel, exchangeEventsHandler) {
         res.send(exchangeEventsHandler.getSnapshot())
     })
 
-    const server = app.listen(5000, function () {
+    const httpPort = process.env.HttpPort
+    const server = app.listen(httpPort, function () {
         let host = server.address().address
         const port = server.address().port
 
