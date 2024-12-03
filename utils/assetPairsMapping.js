@@ -44,7 +44,8 @@ function TryToMapAssetPairForward(assetPair, exchange, settings) {
     var result = assetPair
 
     var mappedAssetPair = MapAssetPairForward(assetPair, settings)
-    var exchangeHasMappedAssetPair = typeof exchange.findMarket(mappedAssetPair) === "object"
+    var market = exchange.markets[mappedAssetPair]
+    var exchangeHasMappedAssetPair = typeof market === "object"
     if (exchangeHasMappedAssetPair)
         result = mappedAssetPair
 

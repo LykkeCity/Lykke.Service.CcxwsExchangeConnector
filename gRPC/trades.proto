@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package common;
+
+import "google/protobuf/timestamp.proto";
+
+message Trade {
+  string venue = 1;
+  string tradeId = 2;
+  string assetPairId = 3;
+  string price = 4;
+  string filledSize = 5;
+  string cancelledSize = 6;
+  google.protobuf.Timestamp timestamp = 7;
+}

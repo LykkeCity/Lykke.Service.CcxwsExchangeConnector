@@ -6,7 +6,7 @@ async function getSettings() {
     settingsUrl = process.env.SettingsUrl
 
     if (!settingsUrl)
-        throw "Settings is not set."
+        throw "Settings are not set."
 
     try
     {
@@ -28,7 +28,7 @@ async function getSettings() {
         console.log(error)
     }
     
-    throw "This point can't be reached."
+    throw "Something wrong with the settings."
 }
 
 module.exports = getSettings

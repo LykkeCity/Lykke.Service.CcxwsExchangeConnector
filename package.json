@@ -4,20 +4,23 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "amqplib": "^0.5.2",
-    "ccxt": "^1.17.477",
-    "ccxws": "^0.16.3",
-    "express": "^4.16.4",
+    "amqplib": "^0.5.6",
+    "ccxt": "^1.45.74",
+    "ccxws": "^0.45.0",
+    "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "moment": "^2.22.2",
+    "moment": "^2.29.1",
     "node-fetch": "^2.2.1",
-    "sorted-map": "^0.1.8",
-    "winston": "^3.1.0"
+    "prom-client": "^13.1.0",
+    "protobufjs": "^6.10.2",
+    "socket.io": "^2.4.1",
+    "winston": "^3.3.3",
+    "zeromq": "5.2.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Lykke Corp (Lykke AG)",
+  "author": "Swisschain",
   "license": "MIT"
 }

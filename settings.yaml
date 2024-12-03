@@ -1,45 +1,72 @@
-CcxwsExchangeConnector:
+CcxwsExchangeConnectorSwisschain:
 
     Main:
 
         Exchanges:
-            settings-key: CcxwsExchangeConnector-Exchanges
+            settings-key: CcxwsExchangeConnector-Swisschain-Exchanges
             types:
               - JsonArray
 
         Symbols:
-            settings-key: CcxwsExchangeConnector-Symbols
+            settings-key: CcxwsExchangeConnector-Swisschain-Symbols
             types:
-              - JsonArray            
+              - JsonArray
 
         AssetsMapping:
-            settings-key: CcxwsExchangeConnector-AssetsMapping
+            settings-key: CcxwsExchangeConnector-Swisschain-AssetsMapping
             types:
-              - JsonArray  
+              - JsonArray
 
         ExchangesNamesSuffix:
-            settings-key: CcxwsExchangeConnector-ExchangesNamesSuffix
+            settings-key: CcxwsExchangeConnector-Swisschain-ExchangesNamesSuffix
 
         ReconnectIntervalMs:
-            settings-key: CcxwsExchangeConnector-ReconnectIntervalMs
-
-        PublishingIntervalMs:
-            settings-key: CcxwsExchangeConnector-PublishingIntervalMs
+            settings-key: CcxwsExchangeConnector-Swisschain-ReconnectIntervalMs
 
         LoggingLevel:
-            settings-key: CcxwsExchangeConnector-LoggingLevel
+            settings-key: CcxwsExchangeConnector-Swisschain-LoggingLevel
 
+        Events:
+
+            Quotes:
+                Subscribe:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-Quotes-Subscribe
+                Publish:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-Quotes-Publish
+
+            OrderBooks:
+                Subscribe:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-OrderBooks-Subscribe
+                Publish:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-OrderBooks-Publish
+                PublishingIntervalMs:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-OrderBooks-PublishingIntervalMs
+
+            Trades:
+                Subscribe:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-Trades-Subscribe
+                Publish:
+                    settings-key: CcxwsExchangeConnector-Swisschain-Events-Trades-Publish
 
     RabbitMq:
+        Disabled:
+            settings-key: CcxwsExchangeConnector-Swisschain-RabbitMq-Disabled
         ConnectionString:
             settings-key: RawPriceRabbitMq
             types:
               - AzureTableStorage
+        Quotes:
+            settings-key: CcxwsExchangeConnector-Swisschain-RabbitMq-Quotes
         OrderBooks:
-            settings-key: CryptoIndexService-OrderBooks
-        TickPrices:
-            settings-key: CryptoIndexService-TickPrices
+            settings-key: CcxwsExchangeConnector-Swisschain-RabbitMq-OrderBooks
+        Trades:
+            settings-key: CcxwsExchangeConnector-Swisschain-RabbitMq-Trades
 
+    SocketIO:
+        Disabled:
+            settings-key: CcxwsExchangeConnector-Swisschain-SocketIO-Disabled
+        Port:
+            settings-key: CcxwsExchangeConnector-Swisschain-SocketIO-Port
 
 SlackNotifications:
     AzureQueue:
